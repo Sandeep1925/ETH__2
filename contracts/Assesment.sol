@@ -1,55 +1,59 @@
 pragma solidity ^0.8.9;
+
 contract Assessment {
-    address payable public owner;
-    uint256 public balance;
-    event Deposit(uint256 amount);
-    event Withdraw(uint256 amount);
+    address payable public contractOwner;
+    uint256 public accountBalance;
 
-    constructor(uint initBalance) payable {
-        owner = payable(msg.sender);
-        balance = initBalance;
+    event FundsDeposited(uint256 amount);
+    event FundsWithdrawn(uint256 amount);
+
+    constructor(uint256 initialBalance) payable {
+        contractOwner = payable(msg.sender);
+        accountBalance = initialBalance;
     }
 
-    function getBalance() public view returns(uint256){
-        return balance;
+    function getBalance() public view returns (uint256) {
+        return accountBalance;
     }
 
-    function deposit(uint256 _amount) public payable {
-        uint _previousBalance = balance;
+    function deposit(uint256 depositAmount) public payable {
+        uint256 previousBalance = accountBalance;
 
-        // make sure this is the owner
-        require(msg.sender == owner, "You are not the owner of this account");
+        // Ensure the caller is the contract owner
+        require(msg.sender == contractOwner, "Only the owner can deposit funds");
 
-        // perform transaction
-        balance += _amount;
+        // Add the deposit amount to the account balance
+        accountBalance += depositAmount;
 
-        // assert transaction completed successfully
-        assert(balance == _previousBalance + _amount);
+        // Verify the transaction was successful
+        assert(accountBalance == previousBalance + depositAmount);
 
-        // emit the event
-        emit Deposit(_amount);
+        // Emit the deposit event
+        emit FundsDeposited(depositAmount);
     }
 
-    // custom error
-    error InsufficientBalance(uint256 balance, uint256 withdrawAmount);
+    // Custom error for insufficient balance
+    error InsufficientBalance(uint256 currentBalance, uint256 amountRequested);
 
-    function withdraw(uint256 _withdrawAmount) public {
-        require(msg.sender == owner, "You are not the owner of this account");
-        uint _previousBalance = balance;
-        if (balance < _withdrawAmount) {
+    function withdraw(uint256 withdrawalAmount) public {
+        require(msg.sender == contractOwner, "Only the owner can withdraw funds");
+        uint256 previousBalance = accountBalance;
+
+        // Check if there are enough funds to withdraw
+        if (accountBalance < withdrawalAmount) {
             revert InsufficientBalance({
-                balance: balance,
-                withdrawAmount: _withdrawAmount
+                currentBalance: accountBalance,
+                amountRequested: withdrawalAmount
             });
         }
 
-        // withdraw the given amount
-        balance -= _withdrawAmount;
+        // Subtract the withdrawal amount from the account balance
+        accountBalance -= withdrawalAmount;
 
-        // assert the balance is correct
-        assert(balance == (_previousBalance - _withdrawAmount));
+        // Verify the transaction was successful
+        assert(accountBalance == previousBalance - withdrawalAmount);
 
-        // emit the event
-        emit Withdraw(_withdrawAmount);
+        // Emit the withdrawal event
+        emit FundsWithdrawn(withdrawalAmount);
     }
 }
