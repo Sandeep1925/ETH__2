@@ -1,18 +1,23 @@
 ## Project Title  
-Ethereum ATM Simulation
+Ethereum Auction House Frontend
 
 ## Problem Statement
-Create an Ethereum smart contract with functions for depositing, withdrawing, and checking balance using Solidity, and interact with it using a React frontend. The smart contract should include error handling using require(), assert(), and revert() statements.
+Create an Ethereum smart contract with functions for Placing Bid, Canceling Bid,Getting Balance and setting Bidder's Account name using Solidity, and interact with it using a React frontend.
 
 ## Description  
-The Assessment contract facilitates the deposit and withdrawal of funds with appropriate error handling mechanisms. A React frontend is provided to interact with the contract, allowing users to connect their Ethereum wallet, view their balance, and perform deposit and withdrawal operations.
+Develop a React frontend for an Ethereum-based auction house that integrates with MetaMask to manage user accounts and bid transactions. The interface should connect to a smart contract for placing and canceling bids, display account balances, and allow users to set their account names. Ensure the application is user-friendly, responsive, and provides clear error handling and loading states.
 
 ## Features
-1. Deposit ETH: Users can deposit ETH into the contract.
-2. Withdraw ETH: Users can withdraw ETH from the contract.
-3. View Balance: Users can view their current balance.
-4. Error Handling: Ensures safe operations with error handling using require(), assert(), and revert().
-5. MetaMask Integration: Connect and interact with the contract using MetaMask.
+1. MetaMask Integration:Connect and manage Ethereum wallets through MetaMask. Display the connected account and provide options for account management.
+
+2.Smart Contract Interaction:Place and cancel bids via the smart contract. Display contract balance and user-specific balance.
+
+3.Account Management:Set and update user account names. View and display the current account name.
+
+4.User Interface: Responsive design with a clean layout. Custom styling including background images and interactive elements.Visual feedback for loading states
+and error handling.
+
+5.Error Handling and User Feedback:Graceful handling of connection and transaction errors. Alerts and notifications for successful actions and errors.
 
 ## Customization
 
@@ -35,12 +40,12 @@ The Assessment contract facilitates the deposit and withdrawal of funds with app
 ### Smart Contract
 
 #### Assessment.sol
-The Assessment contract allows for the deposit and withdrawal of funds, including error handling using require(), assert(), and a custom error with revert().
+The Assessment contract allows for the Placing and Canceling of Bids and updating bidders's account name.
 
 ### Frontend Interaction
 
 #### index.js
-The index.js file provides a React component to interact with the Assessment contract. Users can connect their Ethereum wallet, view their balance, and perform deposit and withdrawal operations.
+The index.js file provides a React component to interact with the Assessment contract. Users can connect their Ethereum wallet, view their balance, and perform Placing and Canceling Bids operations with updation of account name.
 
 ### Deployment Script
 
@@ -59,7 +64,12 @@ npx hardhat compile
 npx hardhat run scripts/deploy.js --network ropsten
 
 3. Run the React frontend:
-npm run dev 
+npm run dev
+
+## Output
+
+![image](https://github.com/user-attachments/assets/358e8785-7d90-4559-ad20-928f34d73001)
+
 
   
 
