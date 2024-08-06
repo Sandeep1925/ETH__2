@@ -1,59 +1,37 @@
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 contract Assessment {
-    address payable public contractOwner;
-    uint256 public accountBalance;
+    mapping(address => uint256) private balances;
+    mapping(address => string) private names;
+    address private owner;
 
-    event FundsDeposited(uint256 amount);
-    event FundsWithdrawn(uint256 amount);
-
-    constructor(uint256 initialBalance) payable {
-        contractOwner = payable(msg.sender);
-        accountBalance = initialBalance;
-    }
+    event BalanceUpdated(address indexed account, uint256 newBalance);
+    event BidPlaced(address indexed account, uint256 amount);
+    event BidCanceled(address indexed account, uint256 amount);
+    event AccountNameUpdated(address indexed account, string newName);
 
     function getBalance() public view returns (uint256) {
-        return accountBalance;
+    require(msg.sender == owner, "Only owner can call this function");
+    return address(this).balance;
+}
+
+
+    function placeBid(uint256 amount) public {
+        balances[msg.sender] += amount;
+        emit BidPlaced(msg.sender, amount);
+        emit BalanceUpdated(msg.sender, balances[msg.sender]);
     }
 
-    function deposit(uint256 depositAmount) public payable {
-        uint256 previousBalance = accountBalance;
-
-        // Ensure the caller is the contract owner
-        require(msg.sender == contractOwner, "Only the owner can deposit funds");
-
-        // Add the deposit amount to the account balance
-        accountBalance += depositAmount;
-
-        // Verify the transaction was successful
-        assert(accountBalance == previousBalance + depositAmount);
-
-        // Emit the deposit event
-        emit FundsDeposited(depositAmount);
+    function cancelBid(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
+        emit BidCanceled(msg.sender, amount);
+        emit BalanceUpdated(msg.sender, balances[msg.sender]);
     }
 
-    // Custom error for insufficient balance
-    error InsufficientBalance(uint256 currentBalance, uint256 amountRequested);
-
-    function withdraw(uint256 withdrawalAmount) public {
-        require(msg.sender == contractOwner, "Only the owner can withdraw funds");
-        uint256 previousBalance = accountBalance;
-
-        // Check if there are enough funds to withdraw
-        if (accountBalance < withdrawalAmount) {
-            revert InsufficientBalance({
-                currentBalance: accountBalance,
-                amountRequested: withdrawalAmount
-            });
-        }
-
-        // Subtract the withdrawal amount from the account balance
-        accountBalance -= withdrawalAmount;
-
-        // Verify the transaction was successful
-        assert(accountBalance == previousBalance - withdrawalAmount);
-
-        // Emit the withdrawal event
-        emit FundsWithdrawn(withdrawalAmount);
+    function setAccountName(string memory newName) public {
+        names[msg.sender] = newName;
+        emit AccountNameUpdated(msg.sender, newName);
     }
 }
