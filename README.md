@@ -8,16 +8,16 @@ Create an Ethereum smart contract with functions for Placing Bid, Canceling Bid,
 Develop a React frontend for an Ethereum-based auction house that integrates with MetaMask to manage user accounts and bid transactions. The interface should connect to a smart contract for placing and canceling bids, display account balances, and allow users to set their account names. Ensure the application is user-friendly, responsive, and provides clear error handling and loading states.
 
 ## Features
-1. MetaMask Integration:Connect and manage Ethereum wallets through MetaMask. Display the connected account and provide options for account management.
+1. MetaMask Integration: Connect and manage Ethereum wallets through MetaMask. 
 
-2.Smart Contract Interaction:Place and cancel bids via the smart contract. Display contract balance and user-specific balance.
+2. Smart Contract Interaction: Place and cancel bids via the smart contract. 
 
-3.Account Management:Set and update user account names. View and display the current account name.
+3. Account Management: Set and update user account names. View and display the current account name.
 
-4.User Interface: Responsive design with a clean layout. Custom styling including background images and interactive elements.Visual feedback for loading states
+4. User Interface: Responsive design with a clean layout. Custom styling including background images and interactive elements.Visual feedback for loading states
 and error handling.
 
-5.Error Handling and User Feedback:Graceful handling of connection and transaction errors. Alerts and notifications for successful actions and errors.
+5. Error Handling and User Feedback: Graceful handling of connection and transaction errors. Alerts and notifications for successful actions and errors.
 
 ## Customization
 
