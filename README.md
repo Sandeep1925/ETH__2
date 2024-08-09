@@ -2,10 +2,10 @@
 Ethereum Auction House Frontend
 
 ## Problem Statement
-Create an Ethereum smart contract with functions for Placing Bid, Canceling Bid,Getting Balance and setting Bidder's Account name using Solidity, and interact with it using a React frontend.
+Create an Ethereum smart contract with functions for Placing Bid, Canceling Bid,Getting Balance,setting Bidder's Account name,setting time limit for bidding and limit for bidding amount using Solidity, and interact with it using a React frontend.
 
 ## Description  
-Develop a React frontend for an Ethereum-based auction house that integrates with MetaMask to manage user accounts and bid transactions. The interface should connect to a smart contract for placing and canceling bids, display account balances, and allow users to set their account names. Ensure the application is user-friendly, responsive, and provides clear error handling and loading states.
+Develop a React frontend for an Ethereum-based auction house that integrates with MetaMask to manage user accounts and bid transactions. The interface should connect to a smart contract for placing and canceling bids, display account balances, allow users to set their account names,set time limit for bidding and limit for bidding amount . Ensure the application is user-friendly, responsive, and provides clear error handling and loading states.
 
 ## Features
 1. MetaMask Integration: Connect and manage Ethereum wallets through MetaMask. 
@@ -45,7 +45,7 @@ The Assessment contract allows for the Placing and Canceling of Bids and updatin
 ### Frontend Interaction
 
 #### index.js
-The index.js file provides a React component to interact with the Assessment contract. Users can connect their Ethereum wallet, view their balance, and perform Placing and Canceling Bids operations with updation of account name.
+The index.js file provides a React component to interact with the Assessment contract. Users can view their account balance, place or cancel bids, set an account name, start an auction, and adjust the bidding limit. 
 
 ### Deployment Script
 
@@ -67,8 +67,8 @@ npx hardhat run scripts/deploy.js --network ropsten
 npm run dev
 
 ## Output
+![image](https://github.com/user-attachments/assets/c0a09cf3-d65c-498b-8826-97b579e97c5a)
 
-![image](https://github.com/user-attachments/assets/358e8785-7d90-4559-ad20-928f34d73001)
 
 
   
