@@ -2,36 +2,63 @@
 pragma solidity ^0.8.0;
 
 contract Assessment {
-    mapping(address => uint256) private balances;
-    mapping(address => string) private names;
-    address private owner;
 
-    event BalanceUpdated(address indexed account, uint256 newBalance);
-    event BidPlaced(address indexed account, uint256 amount);
-    event BidCanceled(address indexed account, uint256 amount);
-    event AccountNameUpdated(address indexed account, string newName);
-
-    function getBalance() public view returns (uint256) {
-    require(msg.sender == owner, "Only owner can call this function");
-    return address(this).balance;
-}
-
-
-    function placeBid(uint256 amount) public {
-        balances[msg.sender] += amount;
-        emit BidPlaced(msg.sender, amount);
-        emit BalanceUpdated(msg.sender, balances[msg.sender]);
+    struct Bid {
+        address bidder;
+        uint amount;
     }
 
-    function cancelBid(uint256 amount) public {
-        require(balances[msg.sender] >= amount, "Insufficient balance");
-        balances[msg.sender] -= amount;
-        emit BidCanceled(msg.sender, amount);
-        emit BalanceUpdated(msg.sender, balances[msg.sender]);
+    Bid[] public bids;
+    uint public biddingLimit = 10 ether;
+    uint public auctionEndTime;
+
+    mapping(address => uint) public activeBids;
+
+    event BidPlaced(address indexed bidder, uint amount);
+    event BidCancelled(address indexed bidder, uint amount);
+    event BiddingLimitChanged(uint newLimit);
+    event BalanceUpdated(address indexed bidder, uint newBalance);
+
+    function startAuction(uint duration) public {
+        auctionEndTime = block.timestamp + duration;
     }
 
-    function setAccountName(string memory newName) public {
-        names[msg.sender] = newName;
-        emit AccountNameUpdated(msg.sender, newName);
+    function placeBid() public payable {
+        require(block.timestamp < auctionEndTime, "Auction has ended");
+        require(msg.value > 0, "No ETH sent with bid");
+        require(msg.value <= biddingLimit, "Bid exceeds the limit");
+
+        
+        activeBids[msg.sender] += msg.value;
+        bids.push(Bid(msg.sender, msg.value));
+
+        emit BidPlaced(msg.sender, msg.value);
+        emit BalanceUpdated(msg.sender, activeBids[msg.sender]);
     }
+
+    function getBids() public view returns (Bid[] memory) {
+        return bids;
+    }
+
+    function setBiddingLimit(uint newLimit) public {
+        biddingLimit = newLimit;
+        emit BiddingLimitChanged(newLimit);
+    }
+
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+
+    function cancelBid(uint amount) public {
+        require(activeBids[msg.sender] >= amount, "Insufficient active bid amount");
+        
+    
+        payable(msg.sender).transfer(amount);
+        activeBids[msg.sender] -= amount;
+
+        emit BidCancelled(msg.sender, amount);
+        emit BalanceUpdated(msg.sender, activeBids[msg.sender]);
+    }
+
+    receive() external payable {}
 }
